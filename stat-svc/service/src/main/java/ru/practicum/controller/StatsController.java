@@ -30,7 +30,7 @@ public class StatsController {
     public ResponseEntity<HitDto> saveStats(@RequestBody @Valid HitDto dto) {
         log.info("POST /hit");
         HitDto result = statsService.saveStats(dto);
-        return ResponseEntity.ok(result);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
     @GetMapping("/stats")
