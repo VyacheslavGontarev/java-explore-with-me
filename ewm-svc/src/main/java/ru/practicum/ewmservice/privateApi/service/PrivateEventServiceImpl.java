@@ -41,17 +41,11 @@ import java.util.List;
 public class PrivateEventServiceImpl implements PrivateEventService {
 
     private final EventRepository eventRepository;
-
     private final CategoryRepository categoryRepository;
-
     private final RequestRepository requestRepository;
-
     private final UserRepository userRepository;
-
     private final EventMapper eventMapper;
-
     private final UserMapper userMapper;
-
     private final CategoryMapper categoryMapper;
     private final RequestMapper requestMapper;
 

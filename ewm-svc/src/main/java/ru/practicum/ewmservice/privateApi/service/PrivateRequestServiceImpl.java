@@ -118,7 +118,6 @@ public class PrivateRequestServiceImpl implements PrivateRequestService {
                 .orElseThrow(() -> new NotFoundException("Request with id= " + requestId + " was not found"));
     }
 
-
     private void checkUniqueRequest(Long userId, Long eventId) {
         List<Request> requests = requestRepository.findByEventIdAndUserId(eventId, userId);
         if (!requests.isEmpty()) {

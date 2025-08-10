@@ -30,7 +30,7 @@ public class AdminEventController {
     private final AdminEventService eventService;
 
     /***
-     * Писк полной информации о событиях
+     * Поиск полной информации о событиях
      * @param users - список id пользователей
      * @param states - список состояний
      * @param categories - список id категорий
