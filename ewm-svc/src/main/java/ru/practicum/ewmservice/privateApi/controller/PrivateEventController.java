@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import ru.practicum.ewmservice.base.dto.comment.AddCommentDto;
+import ru.practicum.ewmservice.base.dto.comment.CommentDto;
+import ru.practicum.ewmservice.base.dto.comment.UpdateCommentDto;
+import ru.practicum.ewmservice.privateApi.service.PrivateCommentService;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,6 +41,7 @@ import java.util.List;
 public class PrivateEventController {
     private final PrivateEventService eventService;
     private final PrivateRequestService requestService;
+    private final PrivateCommentService commentService;
 
     @PostMapping
     public ResponseEntity<FullEventDto> createEvent(@RequestBody @Valid AddEventDto dto,
@@ -86,5 +92,31 @@ public class PrivateEventController {
                                                                     @PathVariable @Positive Long eventId) {
         log.info("GET /users/{}/requests/{}", userId, eventId);
         return ResponseEntity.status(HttpStatus.OK).body(requestService.getRequest(userId, eventId));
+    }
+
+    @PostMapping("/{eventId}/comment")
+    public ResponseEntity<CommentDto> createComment(@PathVariable @Positive Long userId,
+                                                    @PathVariable @Positive Long eventId,
+                                                    @RequestBody @Valid AddCommentDto dto) {
+        log.info("POST /users/{}/events/{}/comment", userId, eventId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(commentService.createComment(userId, eventId, dto));
+    }
+
+    @PatchMapping("/{eventId}/comment/{commentId}")
+    public ResponseEntity<CommentDto> updateComment(@PathVariable @Positive Long userId,
+                                                    @PathVariable @Positive Long eventId,
+                                                    @PathVariable @Positive Long commentId,
+                                                    @RequestBody @Valid UpdateCommentDto dto) {
+        log.info("PATCH /users/{}/events/{}/comment", userId, eventId);
+        return ResponseEntity.status(HttpStatus.OK).body(commentService.updateComment(userId, eventId, commentId, dto));
+    }
+
+    @DeleteMapping("/{eventId}/comment/{commentId}")
+    public ResponseEntity<Void> deleteComment(@PathVariable @Positive Long userId,
+                                              @PathVariable @Positive Long eventId,
+                                              @PathVariable @Positive Long commentId) {
+        log.info("DELETE /users/{}/events/{}/comment", userId, eventId);
+        commentService.deleteComment(userId, eventId, commentId);
+        return ResponseEntity.noContent().build();
     }
 }

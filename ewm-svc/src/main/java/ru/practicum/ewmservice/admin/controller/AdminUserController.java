@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.ewmservice.base.dto.user.AddUserDto;
 import ru.practicum.ewmservice.base.dto.user.UserDto;
 import ru.practicum.ewmservice.admin.service.AdminUserService;
+import ru.practicum.ewmservice.admin.service.AdminCommentService;
+import ru.practicum.ewmservice.base.dto.comment.CommentDto;
 
 import java.util.List;
 
@@ -29,6 +31,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminUserController {
     private final AdminUserService userService;
+    private final AdminCommentService adminCommentService;
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
@@ -54,5 +57,12 @@ public class AdminUserController {
         log.info("DELETE /admin/users/{}", userId);
         userService.deleteUser(userId);
         return ResponseEntity.noContent().build();
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{userId}/comments")
+    public ResponseEntity<List<CommentDto>> getCommentsByUserId(@PathVariable @Positive Long userId) {
+        log.info("GET /admin/users/comments/{}", userId);
+        return ResponseEntity.status(HttpStatus.OK).body(adminCommentService.getCommentsByUserId(userId));
     }
 }
